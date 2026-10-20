@@ -1,5 +1,7 @@
 # Project Instructions
 
+@GUIDELINES.md
+
 ## Rules — these are enforced by `.claude/hooks/guard.sh`
 
 These four rules are hard boundaries. They are enforced mechanically by a
