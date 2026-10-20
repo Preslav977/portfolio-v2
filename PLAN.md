@@ -23,7 +23,7 @@ I read the repo before planning. What exists today:
 | `package.json` scripts | `dev`, `build`, `lint`, `preview` — **no `test` script** |
 | Test deps | `vitest@5.0.5` present; **no** `jsdom`, **no** `@testing-library/*` |
 | Icon library | **none installed** |
-| `DESIGN.md` | does not exist yet — you said you'll create it |
+| `DESIGN.md` | **now written** — the design system: concept, verified palette, type scale, layout, component specs |
 | Vite | `8.3.4`, React `19.3.1`, TypeScript `~6.0.2` |
 
 **Two gaps that contradict the brief, flagged now:**
@@ -275,13 +275,12 @@ Phase 0.**
 ### Phase 0 — Foundations
 No visual output; everything below depends on it.
 - `tsconfig.app.json`: add `"strict": true` (and `"noUncheckedIndexedAccess"`)
-- `DESIGN.md` **scaffold** — I'll create the file with the *token contract*
-  (names, what each controls, the WCAG targets) and placeholder values; you
-  fill in the real colours/type/spacing. The CSS then references only token
-  names, so when you edit `DESIGN.md` the whole site restyles from one file.
-  This is the file `GUIDELINES.md` #11 says to read before any CSS change.
-- `src/styles/tokens.css` + `src/styles/global.css` (reset, `color-scheme`,
-  `scroll-behavior`, reduced-motion block)
+- `src/styles/tokens.css` — transcribed verbatim from `DESIGN.md` §9, which is
+  the source of truth for every token value. `DESIGN.md` is now written, not a
+  scaffold: the palette, type scale, spacing, radii, and motion tokens are all
+  decided and contrast-verified. Read it before touching this file.
+- `src/styles/global.css` (reset, `color-scheme`, `scroll-behavior`,
+  reduced-motion block)
 - `src/types.ts` + `src/content/*.ts` — the full data model, empty-ish
 - `package.json`: add `"test": "vitest"` and `"test:watch": "vitest"`
 - `vite.config.ts`: add a `test` block (environment `node` for now — the
@@ -414,14 +413,12 @@ colour changes.
 ## 8. What I need from you
 
 1. **Confirm the phase order** — I'll start at Phase 0 once you agree.
-2. **DESIGN.md** — you said you'll create it. I'll scaffold it with the token
-   contract in Phase 0 so you have something concrete to fill in; the CSS
-   will only ever reference token names.
-3. **Test packages** — install `@testing-library/react` and `jsdom` when
+2. **Test packages** — install `@testing-library/react` and `jsdom` when
    you're ready, and I'll wire `environment: 'jsdom'` in Phase 7. Say the
    word and I'll do it (with your approval, per rule 4).
-4. **Optional scroll-spy** — do you want the nav to highlight the section
-   you're currently in? (2.2's tradeoff.)
+3. **Optional scroll-spy** — do you want the nav to highlight the section
+   you're currently in? (`DESIGN.md` §5.3 assumes yes; say the word and I'll
+   drop it.)
 5. **Theme toggle** — I planned a light/dark toggle that overrides the OS
    setting. Keep it, or rely on `prefers-color-scheme` alone?
 
