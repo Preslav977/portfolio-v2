@@ -1,0 +1,70 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(./**)",
+      "Grep(./**)",
+      "Glob(./**)",
+      "Bash(npm run build)",
+      "Bash(npm run build:*)",
+      "Bash(npm run lint)",
+      "Bash(npm run lint:*)",
+      "Bash(npm run dev)",
+      "Bash(npm run dev:*)",
+      "Bash(npm run preview)",
+      "Bash(npm run test)",
+      "Bash(npm run test:*)",
+      "Bash(npx vitest*)",
+      "Bash(npm test*)",
+      "Bash(vitest*)",
+      "Bash(npx vite build*)",
+      "Bash(npx eslint*)",
+      "Bash(npx prettier*)",
+      "WebSearch",
+      "WebFetch"
+    ],
+    "deny": [
+      "Read(./.env)",
+      "Read(./.env.*)",
+      "Read(./**/.env)",
+      "Read(./**/.env.*)",
+      "Edit(./.env)",
+      "Edit(./.env.*)",
+      "Edit(./**/.env)",
+      "Edit(./**/.env.*)",
+      "Bash(git commit*)",
+      "Bash(git merge*)",
+      "Bash(git cherry-pick*)",
+      "Bash(git revert*)",
+      "Bash(git am*)",
+      "Bash(git rebase*)"
+    ],
+    "ask": [
+      "Bash(npm install*)",
+      "Bash(npm i *)",
+      "Bash(npm ci*)",
+      "Bash(pnpm add*)",
+      "Bash(pnpm install*)",
+      "Bash(yarn add*)",
+      "Bash(bun add*)",
+      "Bash(pip install*)",
+      "Bash(uv add*)",
+      "Bash(cargo add*)",
+      "Bash(go get*)"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Read|Write|Edit|NotebookEdit|Grep|Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/guard.sh",
+            "timeout": 10,
+            "statusMessage": "Checking project guard rules"
+          }
+        ]
+      }
+    ]
+  }
+}
