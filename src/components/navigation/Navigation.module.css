@@ -1,0 +1,97 @@
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  height: var(--header-height);
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+}
+
+.inner {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  gap: var(--space-6);
+}
+
+.name {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--text);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.name:hover {
+  color: var(--syntax-keyword);
+}
+
+.nav {
+  margin-left: auto;
+}
+
+.links {
+  display: flex;
+  align-items: center;
+  gap: var(--space-6);
+}
+
+.link {
+  display: inline-block;
+  padding-block: var(--space-1);
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
+  transition:
+    color var(--duration-fast) var(--ease-out),
+    border-color var(--duration-fast) var(--ease-out);
+}
+
+.link:hover {
+  color: var(--text);
+}
+
+/* The active link is marked by an underline as well as a colour change, so
+   the state is never signalled by colour alone. */
+.link[data-active="true"] {
+  color: var(--syntax-keyword);
+  border-bottom-color: var(--syntax-keyword);
+}
+
+.themeToggle {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--space-1) var(--space-3);
+  transition:
+    color var(--duration-fast) var(--ease-out),
+    border-color var(--duration-fast) var(--ease-out);
+}
+
+.themeToggle:hover {
+  color: var(--syntax-keyword);
+  border-color: var(--border-strong);
+}
+
+@media (max-width: 40rem) {
+  .inner {
+    gap: var(--space-3);
+  }
+
+  .links {
+    gap: var(--space-3);
+  }
+
+  .link {
+    font-size: var(--text-xs);
+  }
+
+  .themeToggle {
+    padding-inline: var(--space-2);
+  }
+}
