@@ -1,4 +1,5 @@
 import { Footer } from "./components/footer/Footer";
+import { Hero } from "./components/hero/Hero";
 import { Navigation } from "./components/navigation/Navigation";
 
 /**
@@ -19,6 +20,7 @@ export function App() {
       <Navigation />
 
       <main id="main">
+        <Hero />
         {/* Sections are added in the phases that follow. */}
       </main>
 
