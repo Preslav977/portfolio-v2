@@ -12,29 +12,35 @@ approval (rule 3).
 
 I read the repo before planning. What exists today:
 
-| Fact | Value |
-|---|---|
-| `src/App.tsx` | renders `<></>` — empty |
-| `src/main.tsx` | React 19 `createRoot` + `StrictMode` |
-| `src/index.css` | empty `:root {}` |
-| `src/` files | exactly 3 (`App.tsx`, `main.tsx`, `index.css`) |
-| CSS Modules | work natively in Vite, no plugin needed |
-| `tsconfig.app.json` | **`strict` is NOT enabled** |
-| `package.json` scripts | `dev`, `build`, `lint`, `preview` — **no `test` script** |
-| Test deps | `vitest@5.0.5` present; **no** `jsdom`, **no** `@testing-library/*` |
-| Icon library | **none installed** |
-| `DESIGN.md` | **now written** — the design system: concept, verified palette, type scale, layout, component specs |
-| Vite | `8.3.4`, React `19.3.1`, TypeScript `~6.0.2` |
+| Fact                   | Value                                                                                               |
+| ---------------------- | --------------------------------------------------------------------------------------------------- |
+| `src/App.tsx`          | renders `<></>` — empty                                                                             |
+| `src/main.tsx`         | React 19 `createRoot` + `StrictMode`                                                                |
+| `src/index.css`        | empty `:root {}` — **this is where global styles go** (per your instruction)                         |
+| `src/` files           | 4 (`App.tsx`, `main.tsx`, `index.css`, `tests/setup.js`)                                             |
+| CSS Modules            | work natively in Vite, no plugin needed                                                             |
+| `tsconfig.app.json`    | **`strict` is NOT enabled**                                                                         |
+| `package.json` scripts | `dev`, `build`, `lint`, `preview`, `test`                                                           |
+| Test deps              | `vitest@5.0.5`, `jsdom@30.1.3`, `@testing-library/react@16.3.3`, `jest-dom@7.0.1`, `user-event@14.6.8` |
+| Test config            | `vite.config.ts` has `test: { globals: true, environment: "jsdom", setupFiles: "./src/tests/setup.js" }` |
+| Icon library           | **none installed**                                                                                  |
+| `DESIGN.md`            | **now written** — the design system: concept, verified palette, type scale, layout, component specs |
+| Vite                   | `8.3.4`, React `19.3.1`, TypeScript `~6.0.2`                                                        |
 
-**Two gaps that contradict the brief, flagged now:**
+**One gap that contradicts the brief, flagged now:**
 
 1. **Brief #9 asks for strict TypeScript, but `"strict"` is absent from
    `tsconfig.app.json`.** TypeScript defaults `strict` to `false`, so the
-   project is currently *not* strict. Fixing this is Phase 0.
-2. **Brief #11 asks for Vitest tests, but there is no `test` script and no DOM
-   environment.** You said you'll install the test packages later, so the plan
-   sequences tests to fit: pure-logic tests now (no DOM needed), component
-   tests in the final phase once you've installed the packages.
+   project is currently _not_ strict. Fixing this is Phase 0.
+
+**Resolved since the plan was first written:**
+
+- The test packages are installed and the DOM environment is configured, so
+  component tests are no longer deferred to the end. Pure-function and
+  component tests can both be written from Phase 0 onward.
+- Global styles go in `src/index.css` (the file that already exists and is
+  already imported by `main.tsx`) rather than a new `global.css`. There is no
+  `src/styles/` directory — see §4.
 
 ---
 
@@ -46,8 +52,8 @@ Per `GUIDELINES.md` #3 and #9, here is each meaningful choice with its source.
 
 **Decision:** reveal-on-scroll via `IntersectionObserver` + a CSS class toggle.
 
-**Why not `animation-timeline: view()`:** MDN marks it *"not Baseline because
-it does not work in some of the most widely-used browsers"* — Chrome/Edge 115+
+**Why not `animation-timeline: view()`:** MDN marks it _"not Baseline because
+it does not work in some of the most widely-used browsers"_ — Chrome/Edge 115+
 only, with Firefox and Safari lacking complete stable support. Vite 8's default
 `build.target` is `baseline-widely-available` (Chrome 111, Firefox 114, Safari
 16.4), so shipping a scroll-timeline-only animation would leave Firefox and
@@ -69,7 +75,7 @@ no scroll-handler cost. Correctness wins for a portfolio.
 **Decision:** a global reduced-motion opt-out, applied to every animation.
 
 **Why:** MDN marks `prefers-reduced-motion` as **Baseline: Widely available
-since January 2020**. MDN's own guidance is to *remove* unnecessary motion or
+since January 2020**. MDN's own guidance is to _remove_ unnecessary motion or
 replace it with a subtle effect, and to keep only motion that communicates
 state. Large scaling/panning motion is exactly what triggers vestibular
 disorders.
@@ -85,7 +91,7 @@ decorative, so it should collapse to the final text rather than disappear.
 **Decision:** `<a href="#about">` + CSS `scroll-behavior: smooth` +
 `scroll-margin-top` on sections.
 
-**Why:** brief #10 says *"create them with HTML if possible"*. Real anchors
+**Why:** brief #10 says _"create them with HTML if possible"_. Real anchors
 work with JavaScript disabled, are keyboard-accessible for free, and are
 crawlable. `scroll-behavior: smooth` is Baseline (Chrome 61+, Safari 15.4+);
 `scroll-margin-top` is widely available since April 2021 and is what keeps a
@@ -118,16 +124,15 @@ stateful JS in the whole plan.
 
 ### 2.5 Colours get checked, not eyeballed
 
-**Decision:** all colours live as CSS custom properties in
-`src/styles/tokens.css`, and a pure `contrastRatio()` function is used to
-assert every foreground/background pair in **both** themes against WCAG AA —
-4.5:1 for body text, 3:1 for large text and UI borders.
+**Decision:** all colours live as CSS custom properties in `src/index.css`,
+and a pure `contrastRatio()` function is used to assert every
+foreground/background pair in **both** themes against WCAG AA — 4.5:1 for body
+text, 3:1 for large text and UI borders.
 
-**Why:** brief #10 says *"run checks before applying a certain color (light /
-dark theme)"*. A contrast function is pure arithmetic, so it is testable with
-Vitest **without a DOM environment** — which matters because you haven't
-installed `jsdom` yet. This turns "run checks" into a CI-able test rather
-than a manual step I might skip.
+**Why:** brief #10 says _"run checks before applying a certain color (light /
+dark theme)"_. A contrast function is pure arithmetic, so it is testable with
+no DOM at all — the test stays fast and has no setup dependency. This turns
+"run checks" into a CI-able test rather than a manual step I might skip.
 
 **Tradeoff:** a small extra module and a test file, versus a build-time
 colour linter. For ~12 token pairs, hand-rolled is simpler and has no
@@ -146,7 +151,7 @@ friendly), and needs no JS. The `mailto:` builder is a pure function, so the
 encoding is testable.
 
 **Known limitation, stated honestly:** `mailto:` requires a mail-handler
-configured on the *visitor's* device. On a machine with no mail client it
+configured on the _visitor's_ device. On a machine with no mail client it
 does nothing. A hosted form service (Formspree, etc.) would avoid that but
 adds a third party, a dependency, and per-message cost concerns — which you
 explicitly ruled out.
@@ -197,14 +202,14 @@ This is the decision the brief asked me to make. The rule:
 > content file. One-off presentational bits → props only if they'd otherwise
 > be duplicated.**
 
-| Content | Mechanism | Why |
-|---|---|---|
-| Name, tagline, nav labels, about paragraphs, contact details, footer text | `src/content/site.ts` — typed constants, no props | Editing a page's text should be a one-file change, not a hunt through components |
-| Projects list, skills list, social links | `src/content/projects.ts`, `skills.ts` — typed arrays | Uniform, repeating data; adding a project = adding one object, no new component |
-| `ProjectCard` | takes `project: Project` prop | One component, rendered N times — the canonical props case |
-| `SkillGroup` | takes `group: SkillGroup` prop | Same |
-| `SectionHeading`, `TechTag`, `Icon` | take small props (`title`, `icon`, `label`) | Genuinely reusable, and passing data as props beats hardcoding |
-| Nav, Hero, About, Contact, Footer | no props | Each appears once; props would only add ceremony |
+| Content                                                                   | Mechanism                                             | Why                                                                              |
+| ------------------------------------------------------------------------- | ----------------------------------------------------- | -------------------------------------------------------------------------------- |
+| Name, tagline, nav labels, about paragraphs, contact details, footer text | `src/content/site.ts` — typed constants, no props     | Editing a page's text should be a one-file change, not a hunt through components |
+| Projects list, skills list, social links                                  | `src/content/projects.ts`, `skills.ts` — typed arrays | Uniform, repeating data; adding a project = adding one object, no new component  |
+| `ProjectCard`                                                             | takes `project: Project` prop                         | One component, rendered N times — the canonical props case                       |
+| `SkillGroup`                                                              | takes `group: SkillGroup` prop                        | Same                                                                             |
+| `SectionHeading`, `TechTag`, `Icon`                                       | take small props (`title`, `icon`, `label`)           | Genuinely reusable, and passing data as props beats hardcoding                   |
+| Nav, Hero, About, Contact, Footer                                         | no props                                              | Each appears once; props would only add ceremony                                 |
 
 **The rule to remember:** if a value appears once on the page, it lives in
 `site.ts`. If it appears N times, it's an array plus a prop. This keeps
@@ -243,16 +248,34 @@ src/
     contrast.ts      contrastRatio() — pure
     mailto.ts        buildMailtoLink() — pure
     scroll.ts        scrollToSection() — pure-ish
-  styles/
-    tokens.css       colour / spacing / type custom properties
-    global.css       reset, base element styles
-  test/
+  tests/
+    setup.js         already exists — jest-dom matchers + RTL cleanup
     contrast.test.ts
     mailto.test.ts
+    *.test.tsx       component tests, colocated with their subject
+  index.css          THE global stylesheet: tokens, reset, base element styles
   types.ts           Project, SkillGroup, SiteConfig interfaces
   App.tsx            composes the sections
   main.tsx           entry (unchanged)
 ```
+
+**There is no `src/styles/` directory and no `global.css`.** All global styles
+live in `src/index.css` — the file that already exists and is already
+imported by `main.tsx`. Per your instruction, global styles go there rather
+than in a new file. That file holds, in order:
+
+1. The design tokens (the block in `DESIGN.md` §9) — light, dark, and the
+   `data-theme` overrides
+2. The reset
+3. Base element styles (`body`, headings, links, focus rings)
+4. `color-scheme`, `scroll-behavior`, and the `prefers-reduced-motion` block
+
+It is the single global stylesheet for the project, and the only file a CSS
+change should touch outside a `*.module.css`.
+
+**Test folder:** `src/tests/` — the folder you already created for `setup.js`.
+Vitest's `include` default (`**/*.{test,spec}.?(c|m)[jt]s?(x)`) covers it, so
+no config change is needed to pick up `src/tests/contrast.test.ts`.
 
 Two folders rather than a flat `components/` — the project is small, but
 `GUIDELINES.md` #8 says split before files get big, and each component owns a
@@ -273,28 +296,37 @@ next begins. **I'll confirm the phase breakdown with you before starting
 Phase 0.**
 
 ### Phase 0 — Foundations
+
 No visual output; everything below depends on it.
+
 - `tsconfig.app.json`: add `"strict": true` (and `"noUncheckedIndexedAccess"`)
-- `src/styles/tokens.css` — transcribed verbatim from `DESIGN.md` §9, which is
-  the source of truth for every token value. `DESIGN.md` is now written, not a
-  scaffold: the palette, type scale, spacing, radii, and motion tokens are all
-  decided and contrast-verified. Read it before touching this file.
-- `src/styles/global.css` (reset, `color-scheme`, `scroll-behavior`,
-  reduced-motion block)
+- `src/index.css` — the single global stylesheet, written in this order:
+  1. The design tokens, transcribed verbatim from `DESIGN.md` §9 (light, dark,
+     and the `data-theme` overrides for the manual toggle)
+  2. The reset
+  3. Base element styles — `body`, headings, links, focus rings
+  4. `color-scheme`, `scroll-behavior`, and the `prefers-reduced-motion` block
+
+  `DESIGN.md` is the source of truth for every token value: the palette, type
+  scale, spacing, radii, and motion tokens are all decided and
+  contrast-verified. Read it before touching this file.
 - `src/types.ts` + `src/content/*.ts` — the full data model, empty-ish
-- `package.json`: add `"test": "vitest"` and `"test:watch": "vitest"`
-- `vite.config.ts`: add a `test` block (environment `node` for now — the
-  pure-function tests don't need a DOM; `jsdom` comes with your test packages
-  in Phase 7)
-- `src/lib/contrast.ts` + `src/test/contrast.test.ts` — the colour check
+- `src/lib/contrast.ts` + `src/tests/contrast.test.ts` — the colour check
   harness, ready before any colour is applied
+
+**Already done, not repeated here:** the `test` script, the `test` block in
+`vite.config.ts` (`globals: true`, `environment: "jsdom"`,
+`setupFiles: "./src/tests/setup.js"`), and `src/tests/setup.js` with the
+jest-dom matchers and RTL cleanup. I verified `npm run build` and
+`npm run lint` both pass with that setup.
 
 **Exit criteria:** `npm run lint` and `npm run build` pass; `npm test` runs
 the contrast tests; the contrast test fails if any token pair is below its
 WCAG target (so it genuinely gates colour choices).
 
 ### Phase 1 — Page shell & navigation
-- `global.css`: skip link, `scroll-margin-top` on `section[id]`
+
+- `index.css`: skip link, `scroll-margin-top` on `section[id]`
 - `Navigation.tsx` — `<header>` + `<nav>` + `<ul>` of anchors; `aria-current`
   on the active link; sticky with a backdrop blur
 - `Footer.tsx` — `<footer>`, copyright, "back to top" anchor
@@ -307,6 +339,7 @@ doesn't cover the heading; tab order is sensible; the page is navigable with
 the mouse alone.
 
 ### Phase 2 — Hero + typewriter
+
 - `Typewriter.tsx` — the `steps()` typewriter, step count computed from the
   string; `aria-live="off"` on the animated text and a visually-hidden full
   copy for screen readers (otherwise SRs read it character by character)
@@ -318,6 +351,7 @@ the mouse alone.
 completes; with reduced motion on, the full text shows immediately.
 
 ### Phase 3 — About & Skills
+
 - `About.tsx` — a few sentences from `site.ts`, placeholder image with
   explicit width/height (no layout shift) and `alt` text
 - `Skills.tsx` + `SkillGroup.tsx` — frontend / backend / miscellaneous
@@ -328,6 +362,7 @@ completes; with reduced motion on, the full text shows immediately.
 at 320px, 768px, and 1440px.
 
 ### Phase 4 — Projects
+
 - `ProjectCard.tsx` — placeholder image, project name, tech tags, what it's
   for, links to repo and live preview
 - External links get `rel="noreferrer"` and a "opens in a new tab" indicator
@@ -337,6 +372,7 @@ at 320px, 768px, and 1440px.
 **Exit criteria:** adding a project is a single object in `projects.ts`.
 
 ### Phase 5 — Contact & scroll-to-top
+
 - `Contact.tsx` — GitHub icon link, and the form: `<label>` for every field,
   native validation, `buildMailtoLink()` on submit
 - `ScrollToTop.tsx` — the small circle on the right edge; appears only after
@@ -352,7 +388,8 @@ scrolling, and returns to the top on click; the form blocks submission on
 invalid input and opens a pre-filled `mailto:` on valid input.
 
 ### Phase 6 — Motion, theming, performance
-- `use-reveal.ts` — one hook, applied per section, each with its *own*
+
+- `use-reveal.ts` — one hook, applied per section, each with its _own_
   animation (brief #12: every section animates differently, none heavy)
   - Deliberately small: opacity + a short `translateY`, 300–500ms,
     `transform`/`opacity` only so they stay on the compositor
@@ -360,7 +397,7 @@ invalid input and opens a pre-filled `mailto:` on valid input.
 - `content-visibility: auto` + `contain-intrinsic-size: auto <size>` on
   sections — MDN calls it **Baseline 2024 (newly available, Sept 2024)**.
   Note it exceeds Vite's default `build.target` (Safari 16.4 / Firefox 114),
-  so it must be a *progressive enhancement*: unsupported browsers ignore the
+  so it must be a _progressive enhancement_: unsupported browsers ignore the
   property and render normally
 - `prefers-reduced-motion` audit: every animation has a non-motion or
   no-motion fallback
@@ -370,18 +407,37 @@ invalid input and opens a pre-filled `mailto:` on valid input.
 **Exit criteria:** scrolling the full page stays smooth; with reduced motion
 enabled, no animation runs except the typewriter's final state.
 
-### Phase 7 — Tests
-- **Now (no new packages needed):** `contrast.test.ts` (every token pair in
-  both themes meets WCAG), `mailto.test.ts` (subject/body encoding, empty
-  fields, special characters, newline handling)
-- **After you install `@testing-library/react` + `jsdom`:** component tests
-  for the interactive pieces — nav anchors point at real `id`s, the
-  typewriter renders the full text for assistive tech, the form's validation
-  blocks empty/invalid input, the scroll-to-top button's visibility toggles.
-  Per brief #11: happy path, errors, edge cases for each.
+### Phase 7 — Test coverage sweep
 
-**Exit criteria:** `npm test` passes; the contrast test is a real gate on
-colour changes.
+The DOM environment is now installed and configured, so **tests are written
+alongside each component as it is built** (Phase 1 onward) rather than
+collected at the end. This phase is the final sweep: fill the gaps, and add
+the tests for the interactive pieces that were stubbed earlier.
+
+**Already covered during the build phases:**
+
+| Test | Where | Covers |
+|---|---|---|
+| `contrast.test.ts` | Phase 0 | Every token pair in both themes meets WCAG |
+| `mailto.test.ts` | Phase 5 | Subject/body encoding, empty fields, special characters, newlines |
+| `Navigation.test.tsx` | Phase 1 | Nav anchors point at real `id`s; active link gets `aria-current` |
+| `Typewriter.test.tsx` | Phase 2 | Full text is exposed to assistive tech, not typed char-by-char |
+| `Contact.test.tsx` | Phase 5 | Validation blocks empty/invalid input; valid input builds the `mailto:` |
+| `ScrollToTop.test.tsx` | Phase 5 | Visibility toggles; click scrolls to top |
+
+**This phase adds:**
+
+- `App.test.tsx` — the rendered page has one `<h1>`, every `<section>` has an
+  `id` and an `<h2>`, heading levels never skip
+- `use-reveal.test.ts` — the reveal hook adds and removes its class
+  correctly, and cleans up its observer
+- `use-theme.test.ts` — the toggle sets `data-theme`, persists to
+  `localStorage`, and falls back to the OS preference when unset
+
+Per brief #11, each covers happy path, errors, and edge cases.
+
+**Exit criteria:** `npm test` passes with no skipped tests; the contrast test
+is a real gate on colour changes.
 
 ---
 
@@ -413,14 +469,17 @@ colour changes.
 ## 8. What I need from you
 
 1. **Confirm the phase order** — I'll start at Phase 0 once you agree.
-2. **Test packages** — install `@testing-library/react` and `jsdom` when
-   you're ready, and I'll wire `environment: 'jsdom'` in Phase 7. Say the
-   word and I'll do it (with your approval, per rule 4).
-3. **Optional scroll-spy** — do you want the nav to highlight the section
+2. **Optional scroll-spy** — do you want the nav to highlight the section
    you're currently in? (`DESIGN.md` §5.3 assumes yes; say the word and I'll
    drop it.)
-5. **Theme toggle** — I planned a light/dark toggle that overrides the OS
+3. **Theme toggle** — I planned a light/dark toggle that overrides the OS
    setting. Keep it, or rely on `prefers-color-scheme` alone?
+
+**No longer needed from you:** the test packages. `jsdom`,
+`@testing-library/react`, `@testing-library/jest-dom`, and
+`@testing-library/user-event` are installed, `vite.config.ts` has the `test`
+block, and `src/tests/setup.js` registers the jest-dom matchers and the RTL
+cleanup. I verified `npm run build` and `npm run lint` pass with that setup.
 
 ---
 

@@ -24,11 +24,11 @@ Colours are named after the parts of a programming language, not after
 adjectives. `--syntax-keyword`, `--syntax-string`, `--syntax-comment`,
 `--syntax-fn`, `--syntax-type`, `--syntax-constant`. This is the single most
 important thing keeping the design from looking generated: the palette has a
-*reason* that exists outside of aesthetics.
+_reason_ that exists outside of aesthetics.
 
 It also means the colour roles are self-documenting. When you need a new
 element, you don't ask "what colour should this be?" — you ask "what does this
-element *mean*?" and pick the token for that meaning. That's a rule, not a
+element _mean_?" and pick the token for that meaning. That's a rule, not a
 palette, and rules are what keep a design coherent as it grows.
 
 ### 1.2 Editorial, not dashboard
@@ -45,7 +45,7 @@ the centre stays empty enough to read.
 ### 1.3 The layout is a system, not a set of sections
 
 One centred column is the spine. Everything hangs off it, and every repeated
-element is the *same* element at a different scale — the section header, the
+element is the _same_ element at a different scale — the section header, the
 row, the chip, the hairline. Brief #3 asks to reuse styles wherever possible;
 the rule here is:
 
@@ -59,22 +59,22 @@ different components.
 
 Naming these because the default is the enemy of a distinctive result:
 
-| Not doing | Because |
-|---|---|
-| Purple/indigo→pink gradients | The universal AI-portfolio signature |
-| Glassmorphism (heavy `backdrop-filter`) | Costly, and reads as template |
-| Neon glow shadows | Cheap-looking; fights the "instrument" idea |
-| Rounded-everything (`border-radius: 999px` pills) | Suggestive, not technical |
-| Hero with a centred name + 3 pill buttons | The stock portfolio opener |
-| Animated gradient blobs / particles | Distracts from content; hurts perf |
-| Big display font for everything | Hurts readability at length |
-| Icon-only buttons | Unlabelled for screen readers |
-| Fake "terminal" with `>` prompts everywhere | Costume, not design |
+| Not doing                                         | Because                                     |
+| ------------------------------------------------- | ------------------------------------------- |
+| Purple/indigo→pink gradients                      | The universal AI-portfolio signature        |
+| Glassmorphism (heavy `backdrop-filter`)           | Costly, and reads as template               |
+| Neon glow shadows                                 | Cheap-looking; fights the "instrument" idea |
+| Rounded-everything (`border-radius: 999px` pills) | Suggestive, not technical                   |
+| Hero with a centred name + 3 pill buttons         | The stock portfolio opener                  |
+| Animated gradient blobs / particles               | Distracts from content; hurts perf          |
+| Big display font for everything                   | Hurts readability at length                 |
+| Icon-only buttons                                 | Unlabelled for screen readers               |
+| Fake "terminal" with `>` prompts everywhere       | Costume, not design                         |
 
 **On the "terminal" question specifically:** a portfolio styled as a terminal
-is the *other* obvious thing. A real developer recognises a real terminal — no
+is the _other_ obvious thing. A real developer recognises a real terminal — no
 rounded corners on a `bash` prompt, no fake cursor blinking in a text box. So
-the terminal reference is present but *restrained*: monospace is used for code
+the terminal reference is present but _restrained_: monospace is used for code
 identifiers, file paths, and metadata — the places where a monospace font is
 genuinely correct — not as a costume for all copy.
 
@@ -84,25 +84,26 @@ genuinely correct — not as a costume for all copy.
 
 ### 2.1 How the palette works
 
-Two themes, both defined in `src/styles/tokens.css`.
+Two themes, both defined in `src/index.css` — the project's single global
+stylesheet.
 
 - **Light** is the default. Warm off-white, near-black warm ink.
 - **Dark** is a cool near-black with slightly warm off-white text.
 
-Both are *warm-neutral* rather than pure grey. Pure `#000`/`#fff` on screen is
+Both are _warm-neutral_ rather than pure grey. Pure `#000`/`#fff` on screen is
 harsh; a hint of warmth in the neutrals makes long text easier on the eyes
 (brief #2, and brief #10's "easy on the eyes").
 
 The accent hues are chosen to sit **apart** from each other on the wheel so
 they never read as one blurry brand colour:
 
-| Role | Light | Dark | Hue |
-|---|---|---|---|
+| Role                     | Light     | Dark      | Hue         |
+| ------------------------ | --------- | --------- | ----------- |
 | keyword (primary accent) | `#8a5a00` | `#e0a83a` | amber/ochre |
-| fn (secondary accent) | `#0a6a72` | `#3fbcc4` | teal |
-| type (tertiary accent) | `#5b3fa8` | `#a78bfa` | violet |
-| string | `#2f6a2f` | `#7ec87e` | green |
-| danger | `#a02020` | `#e06c75` | red |
+| fn (secondary accent)    | `#0a6a72` | `#3fbcc4` | teal        |
+| type (tertiary accent)   | `#5b3fa8` | `#a78bfa` | violet      |
+| string                   | `#2f6a2f` | `#7ec87e` | green       |
+| danger                   | `#a02020` | `#e06c75` | red         |
 
 The amber is deliberately the primary: it's the one colour that reads as
 "attention without urgency", and it's the colour of a keyword in most
@@ -114,46 +115,46 @@ Complete list. **Only these names may appear in component CSS.**
 
 #### Surfaces
 
-| Token | Light | Dark | Use |
-|---|---|---|---|
-| `--bg` | `#faf9f6` | `#0a0b0d` | Page background |
-| `--surface` | `#ffffff` | `#111317` | Cards, panels, the centred column |
+| Token         | Light     | Dark      | Use                                               |
+| ------------- | --------- | --------- | ------------------------------------------------- |
+| `--bg`        | `#faf9f6` | `#0a0b0d` | Page background                                   |
+| `--surface`   | `#ffffff` | `#111317` | Cards, panels, the centred column                 |
 | `--surface-2` | `#f1efea` | `#171a1f` | Inset: gutters, chips, code blocks, table stripes |
 
 #### Text
 
-| Token | Light | Dark | Use |
-|---|---|---|---|
-| `--text` | `#1a1a19` | `#e8e6e1` | Body copy, headings |
-| `--text-muted` | `#55534e` | `#9a978f` | Secondary copy, captions, metadata |
-| `--text-dim` | `#6b6963` | `#85827b` | Tertiary: timestamps, decorative labels |
+| Token          | Light     | Dark      | Use                                     |
+| -------------- | --------- | --------- | --------------------------------------- |
+| `--text`       | `#1a1a19` | `#e8e6e1` | Body copy, headings                     |
+| `--text-muted` | `#55534e` | `#9a978f` | Secondary copy, captions, metadata      |
+| `--text-dim`   | `#6b6963` | `#85827b` | Tertiary: timestamps, decorative labels |
 
 #### Lines
 
-| Token | Light | Dark | Use |
-|---|---|---|---|
-| `--border` | `#e2dfd8` | `#24272d` | Hairlines, table rules, card outlines |
+| Token             | Light     | Dark      | Use                                      |
+| ----------------- | --------- | --------- | ---------------------------------------- |
+| `--border`        | `#e2dfd8` | `#24272d` | Hairlines, table rules, card outlines    |
 | `--border-strong` | `#8a8781` | `#666b74` | Focus rings, active rules, input borders |
 
 #### Syntax accents
 
-| Token | Light | Dark | Use |
-|---|---|---|---|
-| `--syntax-keyword` | `#8a5a00` | `#e0a83a` | Primary accent: links, active nav, key emphasis |
-| `--syntax-fn` | `#0a6a72` | `#3fbcc4` | Secondary accent: tags, project links, hover |
-| `--syntax-type` | `#5b3fa8` | `#a78bfa` | Tertiary accent: skill categories, rare emphasis |
-| `--syntax-string` | `#2f6a2f` | `#7ec87e` | Quoted text, file paths, success states |
-| `--syntax-comment` | `#6b6963` | `#85827b` | Comments, decorative monospace labels |
-| `--danger` | `#a02020` | `#e06c75` | Error text, form validation messages |
+| Token              | Light     | Dark      | Use                                              |
+| ------------------ | --------- | --------- | ------------------------------------------------ |
+| `--syntax-keyword` | `#8a5a00` | `#e0a83a` | Primary accent: links, active nav, key emphasis  |
+| `--syntax-fn`      | `#0a6a72` | `#3fbcc4` | Secondary accent: tags, project links, hover     |
+| `--syntax-type`    | `#5b3fa8` | `#a78bfa` | Tertiary accent: skill categories, rare emphasis |
+| `--syntax-string`  | `#2f6a2f` | `#7ec87e` | Quoted text, file paths, success states          |
+| `--syntax-comment` | `#6b6963` | `#85827b` | Comments, decorative monospace labels            |
+| `--danger`         | `#a02020` | `#e06c75` | Error text, form validation messages             |
 
 #### Utility
 
-| Token | Value | Use |
-|---|---|---|
-| `--radius` | `2px` | Everything. Deliberately almost-square |
-| `--radius-lg` | `4px` | Panels only |
-| `--measure` | `68ch` | Max line length for prose |
-| `--container` | `68rem` | Centred column max-width |
+| Token         | Value   | Use                                    |
+| ------------- | ------- | -------------------------------------- |
+| `--radius`    | `2px`   | Everything. Deliberately almost-square |
+| `--radius-lg` | `4px`   | Panels only                            |
+| `--measure`   | `68ch`  | Max line length for prose              |
+| `--container` | `68rem` | Centred column max-width               |
 
 ### 2.3 Measured contrast — every pair, verified
 
@@ -163,63 +164,63 @@ WCAG relative-luminance formula. All 46 pairs pass.
 
 **Light theme**
 
-| Pair | Ratio | Required | |
-|---|---|---|---|
-| `--text` on `--bg` | 16.54 | 4.5 | ✅ |
-| `--text` on `--surface` | 16.47 | 4.5 | ✅ |
-| `--text` on `--surface-2` | 15.16 | 4.5 | ✅ |
-| `--text-muted` on `--bg` | 7.30 | 4.5 | ✅ |
-| `--text-muted` on `--surface` | 7.68 | 4.5 | ✅ |
-| `--text-muted` on `--surface-2` | 6.69 | 4.5 | ✅ |
-| `--text-dim` on `--bg` | 5.21 | 4.5 | ✅ |
-| `--text-dim` on `--surface` | 5.49 | 4.5 | ✅ |
-| `--text-dim` on `--surface-2` | 4.78 | 4.5 | ✅ |
-| `--syntax-keyword` on `--bg` | 5.63 | 4.5 | ✅ |
-| `--syntax-keyword` on `--surface` | 5.93 | 4.5 | ✅ |
-| `--syntax-keyword` on `--surface-2` | 5.16 | 4.5 | ✅ |
-| `--syntax-fn` on `--surface` | 6.33 | 4.5 | ✅ |
-| `--syntax-fn` on `--surface-2` | 5.51 | 4.5 | ✅ |
-| `--syntax-type` on `--surface` | 7.72 | 4.5 | ✅ |
-| `--syntax-string` on `--surface-2` | 5.67 | 4.5 | ✅ |
-| `--syntax-comment` on `--surface` | 5.49 | 4.5 | ✅ |
-| `--danger` on `--surface` | 7.71 | 4.5 | ✅ |
-| `--border-strong` on `--bg` | 3.40 | 3.0 | ✅ |
-| `--border-strong` on `--surface` | 3.58 | 3.0 | ✅ |
-| `--border-strong` on `--surface-2` | 3.12 | 3.0 | ✅ |
-| `--bg` on `--syntax-keyword` (button) | 5.63 | 4.5 | ✅ |
-| `--bg` on `--syntax-fn` (button) | 6.01 | 4.5 | ✅ |
+| Pair                                  | Ratio | Required |     |
+| ------------------------------------- | ----- | -------- | --- |
+| `--text` on `--bg`                    | 16.54 | 4.5      | ✅  |
+| `--text` on `--surface`               | 16.47 | 4.5      | ✅  |
+| `--text` on `--surface-2`             | 15.16 | 4.5      | ✅  |
+| `--text-muted` on `--bg`              | 7.30  | 4.5      | ✅  |
+| `--text-muted` on `--surface`         | 7.68  | 4.5      | ✅  |
+| `--text-muted` on `--surface-2`       | 6.69  | 4.5      | ✅  |
+| `--text-dim` on `--bg`                | 5.21  | 4.5      | ✅  |
+| `--text-dim` on `--surface`           | 5.49  | 4.5      | ✅  |
+| `--text-dim` on `--surface-2`         | 4.78  | 4.5      | ✅  |
+| `--syntax-keyword` on `--bg`          | 5.63  | 4.5      | ✅  |
+| `--syntax-keyword` on `--surface`     | 5.93  | 4.5      | ✅  |
+| `--syntax-keyword` on `--surface-2`   | 5.16  | 4.5      | ✅  |
+| `--syntax-fn` on `--surface`          | 6.33  | 4.5      | ✅  |
+| `--syntax-fn` on `--surface-2`        | 5.51  | 4.5      | ✅  |
+| `--syntax-type` on `--surface`        | 7.72  | 4.5      | ✅  |
+| `--syntax-string` on `--surface-2`    | 5.67  | 4.5      | ✅  |
+| `--syntax-comment` on `--surface`     | 5.49  | 4.5      | ✅  |
+| `--danger` on `--surface`             | 7.71  | 4.5      | ✅  |
+| `--border-strong` on `--bg`           | 3.40  | 3.0      | ✅  |
+| `--border-strong` on `--surface`      | 3.58  | 3.0      | ✅  |
+| `--border-strong` on `--surface-2`    | 3.12  | 3.0      | ✅  |
+| `--bg` on `--syntax-keyword` (button) | 5.63  | 4.5      | ✅  |
+| `--bg` on `--syntax-fn` (button)      | 6.01  | 4.5      | ✅  |
 
 **Dark theme**
 
-| Pair | Ratio | Required | |
-|---|---|---|---|
-| `--text` on `--bg` | 15.79 | 4.5 | ✅ |
-| `--text` on `--surface` | 15.34 | 4.5 | ✅ |
-| `--text` on `--surface-2` | 13.98 | 4.5 | ✅ |
-| `--text-muted` on `--bg` | 6.75 | 4.5 | ✅ |
-| `--text-muted` on `--surface` | 6.37 | 4.5 | ✅ |
-| `--text-muted` on `--surface-2` | 5.98 | 4.5 | ✅ |
-| `--text-dim` on `--bg` | 5.13 | 4.5 | ✅ |
-| `--text-dim` on `--surface` | 4.85 | 4.5 | ✅ |
-| `--text-dim` on `--surface-2` | 4.55 | 4.5 | ✅ |
-| `--syntax-keyword` on `--bg` | 9.22 | 4.5 | ✅ |
-| `--syntax-keyword` on `--surface` | 8.71 | 4.5 | ✅ |
-| `--syntax-keyword` on `--surface-2` | 8.17 | 4.5 | ✅ |
-| `--syntax-fn` on `--surface` | 8.15 | 4.5 | ✅ |
-| `--syntax-fn` on `--surface-2` | 7.64 | 4.5 | ✅ |
-| `--syntax-type` on `--surface` | 6.83 | 4.5 | ✅ |
-| `--syntax-string` on `--surface-2` | 8.68 | 4.5 | ✅ |
-| `--syntax-comment` on `--surface` | 4.85 | 4.5 | ✅ |
-| `--danger` on `--surface` | 5.82 | 4.5 | ✅ |
-| `--border-strong` on `--bg` | 3.68 | 3.0 | ✅ |
-| `--border-strong` on `--surface` | 3.47 | 3.0 | ✅ |
-| `--border-strong` on `--surface-2` | 3.26 | 3.0 | ✅ |
-| `--bg` on `--syntax-keyword` (button) | 9.22 | 4.5 | ✅ |
-| `--bg` on `--syntax-fn` (button) | 8.63 | 4.5 | ✅ |
+| Pair                                  | Ratio | Required |     |
+| ------------------------------------- | ----- | -------- | --- |
+| `--text` on `--bg`                    | 15.79 | 4.5      | ✅  |
+| `--text` on `--surface`               | 15.34 | 4.5      | ✅  |
+| `--text` on `--surface-2`             | 13.98 | 4.5      | ✅  |
+| `--text-muted` on `--bg`              | 6.75  | 4.5      | ✅  |
+| `--text-muted` on `--surface`         | 6.37  | 4.5      | ✅  |
+| `--text-muted` on `--surface-2`       | 5.98  | 4.5      | ✅  |
+| `--text-dim` on `--bg`                | 5.13  | 4.5      | ✅  |
+| `--text-dim` on `--surface`           | 4.85  | 4.5      | ✅  |
+| `--text-dim` on `--surface-2`         | 4.55  | 4.5      | ✅  |
+| `--syntax-keyword` on `--bg`          | 9.22  | 4.5      | ✅  |
+| `--syntax-keyword` on `--surface`     | 8.71  | 4.5      | ✅  |
+| `--syntax-keyword` on `--surface-2`   | 8.17  | 4.5      | ✅  |
+| `--syntax-fn` on `--surface`          | 8.15  | 4.5      | ✅  |
+| `--syntax-fn` on `--surface-2`        | 7.64  | 4.5      | ✅  |
+| `--syntax-type` on `--surface`        | 6.83  | 4.5      | ✅  |
+| `--syntax-string` on `--surface-2`    | 8.68  | 4.5      | ✅  |
+| `--syntax-comment` on `--surface`     | 4.85  | 4.5      | ✅  |
+| `--danger` on `--surface`             | 5.82  | 4.5      | ✅  |
+| `--border-strong` on `--bg`           | 3.68  | 3.0      | ✅  |
+| `--border-strong` on `--surface`      | 3.47  | 3.0      | ✅  |
+| `--border-strong` on `--surface-2`    | 3.26  | 3.0      | ✅  |
+| `--bg` on `--syntax-keyword` (button) | 9.22  | 4.5      | ✅  |
+| `--bg` on `--syntax-fn` (button)      | 8.63  | 4.5      | ✅  |
 
 **Rules that follow from the numbers:**
 
-- `--text-dim` is the *lowest* text token and it still clears 4.5:1 on every
+- `--text-dim` is the _lowest_ text token and it still clears 4.5:1 on every
   surface. There is no "decorative" grey that fails contrast.
 - `--border` (1.24–1.33) is **non-text** only — hairlines, table rules, card
   outlines. It must never carry meaning on its own.
@@ -255,23 +256,23 @@ WCAG relative-luminance formula. All 46 pairs pass.
 One scale, used everywhere. Sizes are `clamp()`-based so they fluidly
 respond between 360px and 1280px without media-query jumps.
 
-| Token | Value | Use |
-|---|---|---|
-| `--text-xs` | `0.75rem` | Labels, tags, metadata |
-| `--text-sm` | `0.875rem` | Secondary text, captions, nav |
-| `--text-base` | `1rem` | Body |
-| `--text-lg` | `1.125rem` | Lead paragraph |
-| `--text-xl` | `1.375rem` | H3, card titles |
-| `--text-2xl` | `1.75rem` | H2, section titles |
-| `--text-3xl` | `2.5rem` | H1, hero name |
-| `--text-4xl` | `3.5rem` | Hero display, once per page |
+| Token         | Value      | Use                           |
+| ------------- | ---------- | ----------------------------- |
+| `--text-xs`   | `0.75rem`  | Labels, tags, metadata        |
+| `--text-sm`   | `0.875rem` | Secondary text, captions, nav |
+| `--text-base` | `1rem`     | Body                          |
+| `--text-lg`   | `1.125rem` | Lead paragraph                |
+| `--text-xl`   | `1.375rem` | H3, card titles               |
+| `--text-2xl`  | `1.75rem`  | H2, section titles            |
+| `--text-3xl`  | `2.5rem`   | H1, hero name                 |
+| `--text-4xl`  | `3.5rem`   | Hero display, once per page   |
 
 ### 3.2 Families
 
 - **Body/UI:** a system sans stack. Zero webfont bytes, zero FOUT, instant
   paint.
 - **Mono:** `ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas,
-  monospace` — used *only* where monospace is semantically right: code
+monospace` — used _only_ where monospace is semantically right: code
   identifiers, file paths, tech names, section eyebrows, the typewriter.
 
 **Why no webfont:** a portfolio that loads a 120KB variable font to say
@@ -289,7 +290,7 @@ face later proves worth it, self-host one subset — never a third-party CDN.
 - **Letter spacing:** `-0.02em` on `--text-3xl`/`--text-4xl` (large text
   needs negative tracking or it looks loose), `0` elsewhere, `0.04em` on
   uppercase eyebrows.
-- **Case:** sentence case for headings. Uppercase *only* for small
+- **Case:** sentence case for headings. Uppercase _only_ for small
   monospace eyebrows like `01 / ABOUT`.
 
 ### 3.4 The hero name
@@ -335,18 +336,18 @@ The column is centred with `margin-inline: auto` and a fluid max-width:
 
 Applied concretely:
 
-| Context | Display | Why |
-|---|---|---|
-| Page shell (header/main/footer) | `grid` | Rows stack, but the column must be centred *across* them — grid's `justify-items` handles that in one place |
-| Centred column | `grid` | `justify-content: center` + `minmax(0, 1fr)` |
-| Section internal layout | `grid` | Sections align their sub-parts to a shared baseline grid |
-| Project card grid | `grid` | Genuinely 2D; `repeat(auto-fit, minmax(...))` |
-| Nav link list | `flex` | One row of items |
-| Hero stack (eyebrow → name → line → arrow) | `flex` | One column of items |
-| Tech tag list | `flex` + `wrap` | One row that wraps |
-| About section (text + image) | `grid` | Two columns, side by side |
-| Footer row | `flex` | One row, space-between |
-| Contact form | `grid` | Label + field pairs align in two columns |
+| Context                                    | Display         | Why                                                                                                         |
+| ------------------------------------------ | --------------- | ----------------------------------------------------------------------------------------------------------- |
+| Page shell (header/main/footer)            | `grid`          | Rows stack, but the column must be centred _across_ them — grid's `justify-items` handles that in one place |
+| Centred column                             | `grid`          | `justify-content: center` + `minmax(0, 1fr)`                                                                |
+| Section internal layout                    | `grid`          | Sections align their sub-parts to a shared baseline grid                                                    |
+| Project card grid                          | `grid`          | Genuinely 2D; `repeat(auto-fit, minmax(...))`                                                               |
+| Nav link list                              | `flex`          | One row of items                                                                                            |
+| Hero stack (eyebrow → name → line → arrow) | `flex`          | One column of items                                                                                         |
+| Tech tag list                              | `flex` + `wrap` | One row that wraps                                                                                          |
+| About section (text + image)               | `grid`          | Two columns, side by side                                                                                   |
+| Footer row                                 | `flex`          | One row, space-between                                                                                      |
+| Contact form                               | `grid`          | Label + field pairs align in two columns                                                                    |
 
 **The most common mistake** — using flexbox to centre a column and then
 discovering that a child's width doesn't respect the container. The fix is
@@ -358,11 +359,11 @@ overflow is clipped rather than pushed.
 Three, mobile-first. Minimal by intent — every breakpoint is a decision
 someone has to maintain.
 
-| Name | Min width | What changes |
-|---|---|---|
-| `--bp-sm` | `40rem` (640px) | 2-up project grid, About goes side-by-side |
-| `--bp-md` | `64rem` (1024px) | Hero display size, project grid 3-up |
-| `--bp-lg` | `80rem` (1280px) | Column reaches max width |
+| Name      | Min width        | What changes                               |
+| --------- | ---------------- | ------------------------------------------ |
+| `--bp-sm` | `40rem` (640px)  | 2-up project grid, About goes side-by-side |
+| `--bp-md` | `64rem` (1024px) | Hero display size, project grid 3-up       |
+| `--bp-lg` | `80rem` (1280px) | Column reaches max width                   |
 
 Below 640px everything is a single column. No horizontal scroll, ever.
 
@@ -370,16 +371,16 @@ Below 640px everything is a single column. No horizontal scroll, ever.
 
 A 4px base, named by intent rather than number.
 
-| Token | Value | Use |
-|---|---|---|
-| `--space-1` | `0.25rem` | Chip padding |
-| `--space-2` | `0.5rem` | Tight gaps |
-| `--space-3` | `0.75rem` | Default gap |
-| `--space-4` | `1rem` | Standard padding |
-| `--space-6` | `1.5rem` | Between blocks |
-| `--space-8` | `2rem` | Card padding |
-| `--space-12` | `3rem` | Between sections (mobile) |
-| `--space-16` | `4rem` | Between sections (desktop) |
+| Token        | Value     | Use                        |
+| ------------ | --------- | -------------------------- |
+| `--space-1`  | `0.25rem` | Chip padding               |
+| `--space-2`  | `0.5rem`  | Tight gaps                 |
+| `--space-3`  | `0.75rem` | Default gap                |
+| `--space-4`  | `1rem`    | Standard padding           |
+| `--space-6`  | `1.5rem`  | Between blocks             |
+| `--space-8`  | `2rem`    | Card padding               |
+| `--space-12` | `3rem`    | Between sections (mobile)  |
+| `--space-16` | `4rem`    | Between sections (desktop) |
 
 Section vertical rhythm: `padding-block: var(--space-12)`, stepping to
 `--space-16` at `--bp-md`.
@@ -407,7 +408,7 @@ Supporting sentence that      ← lede: --text-lg, --text-muted, max 60ch
 frames the section.
 ```
 
-The numbered eyebrow is a *system* detail: every section is numbered, which
+The numbered eyebrow is a _system_ detail: every section is numbered, which
 gives the page the feel of a document with a table of contents. It is also
 `aria-hidden` — a screen reader shouldn't announce "slash zero one slash
 about".
@@ -525,16 +526,16 @@ Brief #12: every section animates, but nothing heavy.
 
 ### 6.2 Per-section motion
 
-| Section | Motion |
-|---|---|
-| Hero | Typewriter reveal; arrow bobs 4px, 2s loop |
-| Nav | Active underline slides 200ms |
-| About | Text rises 12px + fades, image scales 0.98→1 |
-| Skills | Group rises 12px, staggered 60ms per group |
-| Projects | Cards rise 16px, staggered 60ms per card |
-| Contact | Fields fade in, staggered 50ms |
-| Footer | No animation — it's the end of the page |
-| Scroll-to-top | Fades + slides 8px in, 150ms |
+| Section       | Motion                                       |
+| ------------- | -------------------------------------------- |
+| Hero          | Typewriter reveal; arrow bobs 4px, 2s loop   |
+| Nav           | Active underline slides 200ms                |
+| About         | Text rises 12px + fades, image scales 0.98→1 |
+| Skills        | Group rises 12px, staggered 60ms per group   |
+| Projects      | Cards rise 16px, staggered 60ms per card     |
+| Contact       | Fields fade in, staggered 50ms               |
+| Footer        | No animation — it's the end of the page      |
+| Scroll-to-top | Fades + slides 8px in, 150ms                 |
 
 ### 6.3 Reveal mechanism
 
@@ -612,7 +613,8 @@ Brief #10: "focus on performance for the animations."
 
 ## 9. Tokens → CSS
 
-The mechanical contract. `src/styles/tokens.css`:
+The mechanical contract. The token block below goes at the top of
+`src/index.css` — the project's single global stylesheet:
 
 ```css
 :root {
