@@ -1,6 +1,36 @@
 .about {
   padding-block: var(--space-12);
   border-top: 1px solid var(--border);
+
+  /* This section's own motion: the text rises 12px and fades in. */
+  --reveal-distance: 12px;
+}
+
+/* The image scales up slightly, rather than rising like the text — a
+   different movement so the two halves of the section do not move as one
+   block. The hidden state is scoped to the pending attribute, so if scripts
+   fail the image is simply visible. */
+.figure {
+  display: grid;
+  gap: var(--space-2);
+  transition:
+    opacity var(--duration-slow) var(--ease-out),
+    transform var(--duration-slow) var(--ease-out);
+}
+
+.about[data-reveal="pending"] .figure {
+  opacity: 0;
+  transform: scale(0.98);
+}
+
+.about[data-reveal="visible"] .figure {
+  opacity: 1;
+  transform: scale(1);
+  transition-delay: 120ms;
+}
+
+.about[data-reveal="visible"] .text {
+  transition-delay: 60ms;
 }
 
 .inner {
@@ -17,11 +47,6 @@
 .paragraph {
   color: var(--text-muted);
   max-width: var(--measure);
-}
-
-.figure {
-  display: grid;
-  gap: var(--space-2);
 }
 
 .image {

@@ -1,17 +1,44 @@
 .skills {
   padding-block: var(--space-12);
   border-top: 1px solid var(--border);
+
+  /* This section's own motion: the groups rise, staggered. */
+  --reveal-distance: 12px;
+}
+
+/* Each group rises in turn rather than the section rising as one block. The
+   hidden state is scoped to the pending attribute, so if scripts fail the
+   groups are simply visible. */
+.group {
+  display: grid;
+  gap: var(--space-3);
+  align-content: start;
+  transition:
+    opacity var(--duration-slow) var(--ease-out),
+    transform var(--duration-slow) var(--ease-out);
+}
+
+.skills[data-reveal="pending"] .group {
+  opacity: 0;
+  transform: translateY(var(--reveal-distance, 12px));
+}
+
+.skills[data-reveal="visible"] .group {
+  opacity: 1;
+  transform: none;
+}
+
+.skills[data-reveal="visible"] .group:nth-child(2) {
+  transition-delay: 60ms;
+}
+
+.skills[data-reveal="visible"] .group:nth-child(3) {
+  transition-delay: 120ms;
 }
 
 .groups {
   display: grid;
   gap: var(--space-8);
-}
-
-.group {
-  display: grid;
-  gap: var(--space-3);
-  align-content: start;
 }
 
 .groupLabel {

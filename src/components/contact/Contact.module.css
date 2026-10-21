@@ -1,6 +1,43 @@
 .contact {
   padding-block: var(--space-12);
   border-top: 1px solid var(--border);
+
+  /* This section's own motion: the form fields fade in one after another. */
+  --reveal-distance: 8px;
+}
+
+/* The form fields fade in, staggered. The intro column fades in as a whole.
+   The hidden state is scoped to the pending attribute, so if scripts fail
+   the fields are simply visible. */
+.field,
+.submit {
+  transition: opacity var(--duration-slow) var(--ease-out);
+}
+
+.contact[data-reveal="pending"] .field,
+.contact[data-reveal="pending"] .submit {
+  opacity: 0;
+}
+
+.contact[data-reveal="visible"] .field {
+  opacity: 1;
+}
+
+.contact[data-reveal="visible"] .field:nth-child(1) {
+  transition-delay: 50ms;
+}
+
+.contact[data-reveal="visible"] .field:nth-child(2) {
+  transition-delay: 100ms;
+}
+
+.contact[data-reveal="visible"] .field:nth-child(3) {
+  transition-delay: 150ms;
+}
+
+.contact[data-reveal="visible"] .submit {
+  opacity: 1;
+  transition-delay: 200ms;
 }
 
 .inner {

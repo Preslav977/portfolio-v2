@@ -1,6 +1,43 @@
 .projects {
   padding-block: var(--space-12);
   border-top: 1px solid var(--border);
+
+  /* This section's own motion: the cards rise a little further than the
+     other sections, staggered one after another. */
+  --reveal-distance: 16px;
+}
+
+/* The card itself is styled in ProjectCard.module.css, and CSS Modules
+   hash class names per file — so the stagger is driven by a data attribute
+   on the card, which is not hashed and can be targeted from here. The hidden
+   state is scoped to the pending attribute, so if scripts fail the cards are
+   simply visible. */
+[data-project-card] {
+  transition:
+    opacity var(--duration-slow) var(--ease-out),
+    transform var(--duration-slow) var(--ease-out);
+}
+
+.projects[data-reveal="pending"] [data-project-card] {
+  opacity: 0;
+  transform: translateY(var(--reveal-distance, 16px));
+}
+
+.projects[data-reveal="visible"] [data-project-card] {
+  opacity: 1;
+  transform: none;
+}
+
+.projects[data-reveal="visible"] [data-project-card]:nth-child(2) {
+  transition-delay: 60ms;
+}
+
+.projects[data-reveal="visible"] [data-project-card]:nth-child(3) {
+  transition-delay: 120ms;
+}
+
+.projects[data-reveal="visible"] [data-project-card]:nth-child(4) {
+  transition-delay: 180ms;
 }
 
 .grid {

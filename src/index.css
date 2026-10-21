@@ -317,7 +317,37 @@ html {
 }
 
 /* --------------------------------------------------------------------------
-   5. Reduced motion
+   5. Reveal mechanism
+   --------------------------------------------------------------------------
+   Shared by every section; each section supplies its own motion on top.
+
+   The visible state is the base. JS adds data-reveal="pending" to hide an
+   element and flips it to "visible" when it scrolls into view. If scripts
+   fail the attribute is never added, so the content simply stays visible —
+   the animation is an enhancement, never a prerequisite for reading.
+
+   The transition is declared on the element itself so it applies to the
+   change into the visible state.
+   -------------------------------------------------------------------------- */
+
+[data-reveal] {
+  transition:
+    opacity var(--duration-slow) var(--ease-out),
+    transform var(--duration-slow) var(--ease-out);
+}
+
+[data-reveal="pending"] {
+  opacity: 0;
+  transform: translateY(var(--reveal-distance, 12px));
+}
+
+[data-reveal="visible"] {
+  opacity: 1;
+  transform: none;
+}
+
+/* --------------------------------------------------------------------------
+   6. Reduced motion
    --------------------------------------------------------------------------
    The base state of every reveal is the visible state. The motion is layered
    on top by JS (data-reveal="pending"), so if scripts fail the content is
@@ -337,8 +367,26 @@ html {
     transition-duration: 0.01ms !important;
   }
 
-  [data-reveal="pending"] {
+  /* Both the element being revealed and the children that animate inside
+     it must be visible, or the section would sit there empty. */
+  [data-reveal="pending"],
+  [data-reveal="pending"] * {
     opacity: 1 !important;
     transform: none !important;
   }
+}
+
+/* --------------------------------------------------------------------------
+   7. Rendering performance
+   --------------------------------------------------------------------------
+   content-visibility lets the browser skip layout and paint for sections
+   that are off screen. MDN marks it Baseline 2024 (newly available), which
+   is newer than Vite's default build target — so it is a progressive
+   enhancement: browsers that do not support it ignore the property and
+   render normally.
+   -------------------------------------------------------------------------- */
+
+main > section:not(:first-child) {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 600px;
 }

@@ -15,7 +15,7 @@ interface ProjectCardProps {
  */
 export function ProjectCard({ project }: ProjectCardProps) {
   return (
-    <article className={styles.card}>
+    <article className={styles.card} data-project-card>
       <img
         className={styles.image}
         src={project.image}
