@@ -1,5 +1,3 @@
-import { readFileSync } from "node:fs";
-import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
 import {
   AA_NON_TEXT,
@@ -8,6 +6,10 @@ import {
   hexToRgb,
   relativeLuminance,
 } from "../lib/contrast";
+// `?inline` returns the stylesheet as a string. Vitest stubs CSS imports by
+// default, so `css: { include: [/\.css/] }` in vite.config.ts is what makes
+// this work — see the comment there.
+import stylesheet from "../index.css?inline";
 
 /**
  * The colour gate (PLAN.md §2.5).
@@ -18,9 +20,6 @@ import {
  * change broke something.
  */
 
-const stylesheetPath = fileURLToPath(new URL("../index.css", import.meta.url));
-const stylesheet = readFileSync(stylesheetPath, "utf8");
-
 type TokenMap = Record<string, string>;
 
 /** Pull every `--name: value;` pair out of a block of CSS. */
@@ -29,7 +28,12 @@ function parseTokens(block: string): TokenMap {
   const pattern = /--([a-z0-9-]+)\s*:\s*([^;]+);/gi;
 
   for (const match of block.matchAll(pattern)) {
-    tokens[match[1]] = match[2].trim();
+    const name = match[1];
+    const value = match[2];
+
+    if (name !== undefined && value !== undefined) {
+      tokens[name] = value.trim();
+    }
   }
 
   return tokens;
@@ -39,7 +43,7 @@ function parseTokens(block: string): TokenMap {
 function readLightTokens(): TokenMap {
   const block = stylesheet.match(/:root\s*\{([^{}]*)\}/);
 
-  if (!block) {
+  if (!block?.[1]) {
     throw new Error("No :root block found in src/index.css");
   }
 
@@ -65,7 +69,7 @@ function readDarkTokens(): TokenMap {
     .slice(mediaIndex)
     .match(/:root[^{]*\{([^{}]*)\}/);
 
-  if (!block) {
+  if (!block?.[1]) {
     throw new Error("No :root block inside the dark media query");
   }
 
@@ -74,6 +78,23 @@ function readDarkTokens(): TokenMap {
 
 const light = readLightTokens();
 const dark = readDarkTokens();
+
+/**
+ * Read a token, failing loudly if it is missing.
+ *
+ * `noUncheckedIndexedAccess` makes every index lookup `string | undefined`;
+ * this narrows it and turns a missing token into a clear error rather than a
+ * confusing `NaN` ratio further down.
+ */
+function token(tokens: TokenMap, name: string): string {
+  const value = tokens[name];
+
+  if (value === undefined) {
+    throw new Error(`Missing --${name} in src/index.css`);
+  }
+
+  return value;
+}
 
 /** Every text-on-surface pair the design relies on. */
 const TEXT_PAIRS: Array<[string, string]> = [
@@ -195,7 +216,10 @@ describe.each([
   it.each(TEXT_PAIRS)(
     "keeps --%s on --%s at or above 4.5:1",
     (foreground, background) => {
-      const ratio = contrastRatio(tokens[foreground], tokens[background]);
+      const ratio = contrastRatio(
+        token(tokens, foreground),
+        token(tokens, background),
+      );
 
       expect(
         ratio,
@@ -207,7 +231,10 @@ describe.each([
   it.each(NON_TEXT_PAIRS)(
     "keeps --%s on --%s at or above 3:1",
     (foreground, background) => {
-      const ratio = contrastRatio(tokens[foreground], tokens[background]);
+      const ratio = contrastRatio(
+        token(tokens, foreground),
+        token(tokens, background),
+      );
 
       expect(
         ratio,
@@ -219,7 +246,10 @@ describe.each([
   it.each(INVERSE_PAIRS)(
     "keeps --%s readable on the filled --%s button",
     (foreground, background) => {
-      const ratio = contrastRatio(tokens[foreground], tokens[background]);
+      const ratio = contrastRatio(
+        token(tokens, foreground),
+        token(tokens, background),
+      );
 
       expect(
         ratio,
@@ -231,22 +261,37 @@ describe.each([
 
 describe("the two themes", () => {
   it("are genuinely different, not one inverted", () => {
-    expect(light.bg).not.toBe(dark.bg);
-    expect(light.text).not.toBe(dark.text);
+    expect(token(light, "bg")).not.toBe(token(dark, "bg"));
+    expect(token(light, "text")).not.toBe(token(dark, "text"));
   });
 
-  it("give each theme a dark background and a light foreground", () => {
-    expect(relativeLuminance(light.bg)).toBeLessThan(
-      relativeLuminance(light.text),
+  it("give the light theme a light background and a dark foreground", () => {
+    expect(relativeLuminance(token(light, "bg"))).toBeGreaterThan(
+      relativeLuminance(token(light, "text")),
     );
-    expect(relativeLuminance(dark.bg)).toBeLessThan(
-      relativeLuminance(dark.text),
+  });
+
+  it("give the dark theme a dark background and a light foreground", () => {
+    expect(relativeLuminance(token(dark, "bg"))).toBeLessThan(
+      relativeLuminance(token(dark, "text")),
     );
   });
 
   it("declare the same set of colour tokens", () => {
     const colourTokens = (tokens: TokenMap) =>
-      Object.keys(tokens).filter((key) => key.startsWith("syntax-") || key === "bg" || key === "surface" || key === "surface-2" || key === "text" || key === "text-muted" || key === "text-dim" || key === "border" || key === "border-strong" || key === "danger");
+      Object.keys(tokens).filter(
+        (key) =>
+          key.startsWith("syntax-") ||
+          key === "bg" ||
+          key === "surface" ||
+          key === "surface-2" ||
+          key === "text" ||
+          key === "text-muted" ||
+          key === "text-dim" ||
+          key === "border" ||
+          key === "border-strong" ||
+          key === "danger",
+      );
 
     expect(colourTokens(dark).sort()).toEqual(colourTokens(light).sort());
   });

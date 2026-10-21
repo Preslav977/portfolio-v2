@@ -33,7 +33,7 @@ export function hexToRgb(hex: HexColor): { r: number; g: number; b: number } {
     throw new Error(`Invalid hex colour: "${hex}"`);
   }
 
-  const digits = match[1].toLowerCase();
+  const digits = match[1]?.toLowerCase() ?? "";
   const full =
     digits.length === 3
       ? digits
