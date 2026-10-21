@@ -1,0 +1,46 @@
+.wrapper {
+  display: inline-block;
+}
+
+.animated {
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  vertical-align: bottom;
+  font-family: var(--font-mono);
+  color: var(--text-muted);
+
+  /* The typing reveal. The step count and duration come from the text
+     itself, set as custom properties by the component, so the animation can
+     never drift out of sync with the string it is typing. */
+  width: 0;
+  border-right: 2px solid var(--syntax-keyword);
+  animation: type var(--typewriter-duration, 2.4s)
+    steps(var(--typewriter-steps, 1), end) forwards;
+}
+
+@keyframes type {
+  from {
+    width: 0;
+  }
+
+  to {
+    width: calc(var(--typewriter-steps, 1) * 1ch);
+  }
+}
+
+/* The caret blinks while the text is being written, then stops. */
+.animated::after {
+  content: "";
+  display: inline-block;
+  width: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animated {
+    /* The global reduced-motion rule collapses the animation duration, which
+       snaps the text to its full width. The caret is removed so nothing
+       blinks. */
+    border-right-color: transparent;
+  }
+}
