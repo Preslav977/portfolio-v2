@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { site } from "../../content/site";
 import { useReveal } from "../../hooks/use-reveal";
-import { buildMailtoLink } from "../../lib/mailto";
+import { buildMailtoLink, readMessageForm } from "../../lib/mailto";
 import { GitHub } from "../icons/GitHub";
 import { SectionHeading } from "../section-heading/SectionHeading";
 import styles from "./Contact.module.css";
@@ -30,7 +30,7 @@ export function Contact() {
     const link = buildMailtoLink({
       to: site.contact.email,
       subject: `Message from ${name}`,
-      body: `${message}\n\n— ${name} (${email})`,
+      body: readMessageForm({ name, email, message }),
     });
 
     setSubmitted(true);
