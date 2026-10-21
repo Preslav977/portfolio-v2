@@ -1,0 +1,76 @@
+.hero {
+  display: grid;
+  place-items: center;
+  padding-block: var(--space-16) var(--space-12);
+  min-height: 60vh;
+}
+
+.inner {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-4);
+  text-align: center;
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--syntax-comment);
+}
+
+.name {
+  font-size: var(--text-4xl);
+  font-weight: 600;
+  color: var(--text);
+}
+
+.tagline {
+  font-size: var(--text-lg);
+  color: var(--text-muted);
+  max-width: none;
+}
+
+.arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  margin-top: var(--space-4);
+  color: var(--syntax-keyword);
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  text-decoration: none;
+  transition:
+    color var(--duration-fast) var(--ease-out),
+    border-color var(--duration-fast) var(--ease-out);
+}
+
+.arrow:hover {
+  color: var(--syntax-fn);
+  border-color: var(--border-strong);
+}
+
+/* A slow, small bob. Transform only, so it stays on the compositor. */
+.arrow svg {
+  animation: bob 2s var(--ease-out) infinite;
+}
+
+@keyframes bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(4px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .arrow svg {
+    animation: none;
+  }
+}

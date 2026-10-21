@@ -10,13 +10,26 @@
   font-family: var(--font-mono);
   color: var(--text-muted);
 
-  /* The typing reveal. The step count and duration come from the text
-     itself, set as custom properties by the component, so the animation can
-     never drift out of sync with the string it is typing. */
+  /* The typing reveal. The step count and duration are set as custom
+     properties by the component, so the animation can never drift out of
+     sync with the string it is typing.
+
+     The timing function is passed whole, as `--typewriter-timing`, rather
+     than as `steps(var(--n))`. The spec requires steps() to take a literal
+     number token, so a bare var() inside steps() is not substituted
+     reliably. Carrying the complete function in a custom property is the
+     documented workaround. */
   width: 0;
   border-right: 2px solid var(--syntax-keyword);
-  animation: type var(--typewriter-duration, 2.4s)
-    steps(var(--typewriter-steps, 1), end) forwards;
+
+  animation-name: type, caret;
+  animation-duration: var(--typewriter-duration, 2.4s), 1s;
+  animation-timing-function: var(--typewriter-timing, steps(1, end)),
+    steps(1, end);
+  animation-fill-mode: forwards, none;
+  /* The caret blinks a few times and then stops — an infinite animation
+     would keep the compositor busy for the life of the page. */
+  animation-iteration-count: 1, 3;
 }
 
 @keyframes type {
@@ -29,18 +42,22 @@
   }
 }
 
-/* The caret blinks while the text is being written, then stops. */
-.animated::after {
-  content: "";
-  display: inline-block;
-  width: 0;
+@keyframes caret {
+  0%,
+  50% {
+    border-right-color: var(--syntax-keyword);
+  }
+
+  51%,
+  100% {
+    border-right-color: transparent;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .animated {
     /* The global reduced-motion rule collapses the animation duration, which
-       snaps the text to its full width. The caret is removed so nothing
-       blinks. */
-    border-right-color: transparent;
+       snaps the text to its full width. The caret stops blinking. */
+    animation-iteration-count: 1, 1;
   }
 }
