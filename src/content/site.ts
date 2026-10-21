@@ -26,7 +26,7 @@ export const site: SiteConfig = {
       "My journey started with a single HTML file and a lot of curiosity. Since then I've worked on everything from small internal tools to products used by thousands of people, and I've learned that the interesting part is rarely the framework — it's the problem.",
       "Away from the keyboard you'll find me hiking, reading, or taking a photo of something that probably doesn't need photographing.",
     ],
-    image: "/placeholder-about.jpg",
+    image: "/placeholder-about.svg",
     imageAlt: "Portrait of me",
   },
 
