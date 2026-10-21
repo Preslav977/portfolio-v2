@@ -1,0 +1,40 @@
+.button {
+  position: fixed;
+  right: var(--gutter);
+  bottom: 30%;
+  z-index: 20;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border-strong);
+  border-radius: 50%;
+  opacity: 0;
+  transform: translateY(8px);
+  pointer-events: none;
+  transition:
+    opacity var(--duration-fast) var(--ease-out),
+    transform var(--duration-fast) var(--ease-out);
+}
+
+.button[data-visible="true"] {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.button:hover {
+  color: var(--syntax-keyword);
+  border-color: var(--syntax-keyword);
+}
+
+@media (max-width: 40rem) {
+  .button {
+    /* A larger touch target on mobile, without changing the visual size
+       much. */
+    width: 44px;
+    height: 44px;
+  }
+}
