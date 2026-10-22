@@ -10,33 +10,44 @@ import type { Project } from "../types";
 export const projects: Project[] = [
   {
     id: "project-one",
-    name: "Project One",
+    name: "JobScrapper",
     description:
-      "A short description of what this project does and who it was for. Two sentences at most — the card is a teaser, not a case study.",
-    image: "/placeholder-project-1.svg",
-    imageAlt: "Screenshot of Project One",
-    technologies: ["TypeScript", "React", "Node.js"],
+      "JobScrapper is a full-stack project that navigates to the companies' sites and looks for jobs. It scrapes, extracts the information about developer jobs, sanitizes it, and saves it for later.",
+    image: "/job scraper.png",
+    imageAlt: "Screenshot of JobScrapper",
+    technologies: [
+      "TypeScript",
+      "React",
+      "Node.js",
+      "Puppeteer",
+      "MSW",
+      "Prisma",
+    ],
     links: [
       {
         label: "Repository",
-        href: "https://github.com/",
+        href: "https://github.com/Preslav977/jobscrapper-backend",
         external: true,
       },
-      { label: "Live preview", href: "https://example.com/", external: true },
+      {
+        label: "Live preview",
+        href: "https://jobscrapper-frontend-sxkw.vercel.app/",
+        external: true,
+      },
     ],
   },
   {
     id: "project-two",
-    name: "Project Two",
+    name: "YouTube Agent",
     description:
-      "Another placeholder. Replace it with something that shows a different kind of problem from the first one, so the section reads as a range of work.",
-    image: "/placeholder-project-2.svg",
-    imageAlt: "Screenshot of Project Two",
-    technologies: ["Python", "PostgreSQL", "Docker"],
+      "YouTube Agent is a full-stack project that auto-discovers a selected channel's first uploaded video by fetching and sorting songs by using the YouTube API. Then it creates a playlist that saves the sorted songs from the channel by oldest.",
+    image: "/youtube agent.png",
+    imageAlt: "Screenshot of Youtube Agent",
+    technologies: ["TypeScript", "TanStack Query", "Node.js", "Prisma", "MSW"],
     links: [
       {
         label: "Repository",
-        href: "https://github.com/",
+        href: "https://github.com/Preslav977/youtube-agent-backend",
         external: true,
       },
       { label: "Live preview", href: "https://example.com/", external: true },
