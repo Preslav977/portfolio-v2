@@ -45,7 +45,7 @@ export function About() {
             loading="lazy"
           />
           <figcaption className={styles.caption}>
-            Placeholder portrait — replace with your own photo
+            {/* Placeholder portrait — replace with your own photo */}
           </figcaption>
         </figure>
       </div>

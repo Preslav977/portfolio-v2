@@ -8,10 +8,11 @@ import type { SiteConfig } from "../types";
  * placeholder text with your own — no component needs to change.
  */
 export const site: SiteConfig = {
-  name: "Your Name",
+  name: "Preslav Tsvetanov",
   role: "Full-stack developer",
-  heroEyebrow: "Portfolio",
-  typewriterText: "I build things that work.",
+  heroEyebrow: "Portfolio V2",
+  typewriterText:
+    "I build things that make me take me close to real-world problem solving.",
 
   nav: [
     { id: "about", label: "About" },
@@ -22,22 +23,30 @@ export const site: SiteConfig = {
 
   about: {
     paragraphs: [
-      "I'm a developer who enjoys turning rough ideas into software people can actually use. I work mostly across the stack — the design of an interface, the logic behind it, and the plumbing that keeps it running.",
-      "My journey started with a single HTML file and a lot of curiosity. Since then I've worked on everything from small internal tools to products used by thousands of people, and I've learned that the interesting part is rarely the framework — it's the problem.",
-      "Away from the keyboard you'll find me hiking, reading, or taking a photo of something that probably doesn't need photographing.",
+      "I'm a developer who enjoys turning ideas into software that people might use.",
+      "I work mostly on the PERN stack, using it as a foundation - designing the interface, creating the server that handles the data, and more.",
+      "My journey started on The Odin Project, from knowing almost nothing to learning a lot to get there with a lot of persistence, trial and error, and making tons of mistakes.",
+      "I have worked from creating the most simple project, rock, paper, and scissors, to creating full-stack projects, integrating AI, and everyday learning something new.",
+      "Away from the computer, I prefer listening to music, watching documentaries, and playing roguelike games from time to time.",
     ],
-    image: "/placeholder-about.svg",
-    imageAlt: "Portrait of me",
+    image: "/profile picture.png",
+    imageAlt: "Picture of me",
   },
 
   contact: {
     heading: "Get in touch",
     intro:
       "Have something in mind, or just want to say hello? Send a message and I'll get back to you.",
-    email: "hello@example.com",
-    links: [{ label: "GitHub", href: "https://github.com/", external: true }],
+    email: "preslavtsvetanov97@gmail.com",
+    links: [
+      {
+        label: "GitHub",
+        href: "https://github.com/Preslav977",
+        external: true,
+      },
+    ],
   },
 
-  copyright: "Your Name",
+  copyright: "Preslav Tsvetanov",
   backToTopLabel: "Back to top",
 };
