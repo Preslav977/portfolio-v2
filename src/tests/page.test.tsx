@@ -152,6 +152,30 @@ describe("the assembled page", () => {
     }
   });
 
+  it("links each project screenshot to its live preview", () => {
+    render(<App />);
+
+    for (const project of projects) {
+      const preview = project.links.find((link) =>
+        link.label.toLowerCase().includes("preview"),
+      );
+
+      if (!preview) {
+        continue;
+      }
+
+      const heading = screen.getByRole("heading", { name: project.name });
+      const card = heading.closest("article") as HTMLElement;
+      const imageLink = within(card).getByRole("link", {
+        name: new RegExp(`live preview of ${project.name}`, "i"),
+      });
+
+      expect(imageLink).toHaveAttribute("href", preview.href);
+      expect(imageLink).toHaveAttribute("target", "_blank");
+      expect(imageLink).toHaveAttribute("rel", "noreferrer");
+    }
+  });
+
   it("gives the contact form a submit button", () => {
     render(<App />);
 

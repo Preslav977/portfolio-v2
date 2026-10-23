@@ -13,7 +13,7 @@ export const projects: Project[] = [
     name: "JobScrapper",
     description:
       "JobScrapper is a full-stack project that navigates to the companies' sites and looks for jobs. It scrapes, extracts the information about developer jobs, sanitizes it, and saves it for later.",
-    image: "/job scraper.png",
+    image: "/job-scraper.png",
     imageAlt: "Screenshot of JobScrapper",
     technologies: [
       "TypeScript",
@@ -41,7 +41,7 @@ export const projects: Project[] = [
     name: "YouTube Agent",
     description:
       "YouTube Agent is a full-stack project that auto-discovers a selected channel's first uploaded video by fetching and sorting songs by using the YouTube API. Then it creates a playlist that saves the sorted songs from the channel by oldest.",
-    image: "/youtube agent.png",
+    image: "/youtube-agent.png",
     imageAlt: "Screenshot of Youtube Agent",
     technologies: ["TypeScript", "TanStack Query", "Node.js", "Prisma", "MSW"],
     links: [

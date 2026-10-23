@@ -2,6 +2,7 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it } from "vitest";
 import { Contact } from "../components/contact/Contact";
+import { site } from "../content/site";
 
 describe("Contact", () => {
   it("labels every form field", () => {
@@ -66,8 +67,9 @@ describe("Contact", () => {
 
     const link = screen.getByRole("link", { name: /github/i });
 
-    expect(link).toHaveAttribute("href", "https://github.com/");
+    expect(link).toHaveAttribute("href", site.contact.links[0]?.href);
     expect(link).toHaveAttribute("target", "_blank");
     expect(link).toHaveAttribute("rel", "noreferrer");
+    expect(link).toHaveTextContent(/opens in a new tab/i);
   });
 });

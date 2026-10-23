@@ -29,7 +29,7 @@ export const site: SiteConfig = {
       "I have worked from creating the most simple project, rock, paper, and scissors, to creating full-stack projects, integrating AI, and everyday learning something new.",
       "Away from the computer, I prefer listening to music, watching documentaries, and playing roguelike games from time to time.",
     ],
-    image: "/profile picture.png",
+    image: "/profile-picture.jpg",
     imageAlt: "Picture of me",
   },
 

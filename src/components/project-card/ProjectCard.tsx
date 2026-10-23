@@ -12,18 +12,46 @@ interface ProjectCardProps {
  * The technology tags are monogram chips rather than brand logos: no icon
  * library is installed, and the tech name is always present as text, so the
  * information never depends on an image (PLAN.md §2.7).
+ *
+ * The preview image links to the live preview, so the screenshot is not a
+ * dead end — the reader can see the real thing one click away.
  */
 export function ProjectCard({ project }: ProjectCardProps) {
+  const previewLink = project.links.find((link) =>
+    link.label.toLowerCase().includes("preview"),
+  );
+
   return (
     <article className={styles.card} data-project-card>
-      <img
-        className={styles.image}
-        src={project.image}
-        alt={project.imageAlt}
-        width={640}
-        height={400}
-        loading="lazy"
-      />
+      {previewLink ? (
+        <a
+          className={styles.imageLink}
+          href={previewLink.href}
+          rel="noreferrer"
+          target="_blank"
+        >
+          <img
+            className={styles.image}
+            src={project.image}
+            alt={project.imageAlt}
+            width={640}
+            height={400}
+            loading="lazy"
+          />
+          <span className="visually-hidden">
+            Open the live preview of {project.name} (opens in a new tab)
+          </span>
+        </a>
+      ) : (
+        <img
+          className={styles.image}
+          src={project.image}
+          alt={project.imageAlt}
+          width={640}
+          height={400}
+          loading="lazy"
+        />
+      )}
 
       <div className={styles.body}>
         <h3 className={styles.name}>{project.name}</h3>

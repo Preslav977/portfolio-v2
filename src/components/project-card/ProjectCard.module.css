@@ -21,6 +21,21 @@
   border-bottom: 1px solid var(--border);
 }
 
+/* The screenshot links to the live preview, so it is a way in rather than a
+   dead end. The image scales up slightly on hover to invite the click. */
+.imageLink {
+  display: block;
+  overflow: hidden;
+}
+
+.imageLink .image {
+  transition: transform var(--duration-slow) var(--ease-out);
+}
+
+.imageLink:hover .image {
+  transform: scale(1.03);
+}
+
 .body {
   display: grid;
   gap: var(--space-3);

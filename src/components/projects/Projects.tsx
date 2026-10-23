@@ -25,7 +25,7 @@ export function Projects() {
           number="03"
           eyebrow="Projects"
           title="Things I have built"
-          lede="A selection of projects — each one started as a problem worth solving."
+          lede="A selection of projects - each one started as a problem worth solving."
         />
 
         <div className={styles.grid}>

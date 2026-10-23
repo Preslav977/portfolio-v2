@@ -479,6 +479,18 @@ A `--surface` panel with `--border` outline, `--radius`, `--space-8` padding.
   (`--syntax-keyword`), each with a small inline SVG and a visually-hidden
   "(opens in a new tab)".
 
+**Screenshots must be cropped to their content before use.** A full-window
+capture (1920px wide) of an app whose interface occupies a narrow centred
+column leaves ~75% of the image empty. Scaled into a 340px card, the actual
+interface lands at 50–90px wide and is unreadable — no aspect ratio or
+container width fixes that, because the problem is the _source_ image, not
+the layout.
+
+Crop each screenshot to the part of the app worth showing, at 16:10, and
+export it at roughly 2× its display size. The crop is what makes the card
+legible; the container width is not the lever. The image itself links to the
+live preview, so it is a way in rather than a dead end.
+
 ### 5.8 Contact
 
 - GitHub link: inline SVG icon + visible text (never icon-only).
